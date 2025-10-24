@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkerDemoApp.Services", "W
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkerDemoApp.WebUI", "WorkerDemoApp.WebUI\WorkerDemoApp.WebUI.csproj", "{5F0AEC20-5E91-4969-ABD3-F511BD0E3A38}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkerDemoApp.Worker", "WorkerDemoApp.Worker\WorkerDemoApp.Worker.csproj", "{318D6F9C-E954-4FB9-ADAA-B7F00CDB59A8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{5F0AEC20-5E91-4969-ABD3-F511BD0E3A38}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F0AEC20-5E91-4969-ABD3-F511BD0E3A38}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5F0AEC20-5E91-4969-ABD3-F511BD0E3A38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{318D6F9C-E954-4FB9-ADAA-B7F00CDB59A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{318D6F9C-E954-4FB9-ADAA-B7F00CDB59A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{318D6F9C-E954-4FB9-ADAA-B7F00CDB59A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{318D6F9C-E954-4FB9-ADAA-B7F00CDB59A8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
