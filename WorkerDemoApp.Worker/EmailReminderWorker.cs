@@ -36,7 +36,7 @@ namespace WorkerDemoApp.Worker
                     _logger.LogError(ex, "Reminder loop failed");
                 }
 
-                await Task.Delay(TimeSpan.FromMinutes(10), stoppingToken);
+                await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
             }
         }
     }

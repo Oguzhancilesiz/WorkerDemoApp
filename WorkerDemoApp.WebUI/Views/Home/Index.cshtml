@@ -1,8 +1,95 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@using WorkerDemoApp.WebUI.Models.ViewModels.Dashboard
+@model DashboardVm
+@{
+    ViewData["Title"] = "Gösterge Paneli";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container">
+    <div class="row g-3 mb-4">
+        <div class="col-md-3">
+            <div class="glass-card p-4 h-100">
+                <div class="d-flex justify-content-between">
+                    <span>Toplam Kullanıcı</span>
+                    <i class="bi bi-people fs-4"></i>
+                </div>
+                <div class="fs-2 fw-bold">@Model.TotalUsers</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="glass-card p-4 h-100">
+                <div class="d-flex justify-content-between">
+                    <span>Doğrulanan</span>
+                    <i class="bi bi-shield-check fs-4"></i>
+                </div>
+                <div class="fs-2 fw-bold text-success">@Model.ConfirmedUsers</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="glass-card p-4 h-100">
+                <div class="d-flex justify-content-between">
+                    <span>Doğrulanmamış</span>
+                    <i class="bi bi-shield-exclamation fs-4"></i>
+                </div>
+                <div class="fs-2 fw-bold text-warning">@Model.UnconfirmedUsers</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="glass-card p-4 h-100">
+                <div class="d-flex justify-content-between">
+                    <span>Toplam Hatırlatma</span>
+                    <i class="bi bi-envelope-paper fs-4"></i>
+                </div>
+                <div class="fs-2 fw-bold text-info">@Model.TotalRemindersSent</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="glass-card p-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="mb-0"><i class="bi bi-activity me-2"></i>Son Aktiviteler</h5>
+            <span class="badge text-bg-secondary">Bekleyen Kodlar: @Model.PendingCodes</span>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-dark table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>E-posta</th>
+                        <th>Durum</th>
+                        <th>Kayıt</th>
+                        <th>Son Kod</th>
+                        <th>Süre Sonu</th>
+                        <th>Kullanım</th>
+                        <th>Son Hatırlatma</th>
+                        <th>Hatırlatma Sayısı</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var r in Model.Rows)
+                    {
+                        <tr>
+                            <td>@r.Email</td>
+                            <td>
+                                @if (r.EmailConfirmed)
+                                {
+                                    <span class="badge text-bg-success">Doğrulandı</span>
+                                }
+                                else
+                                {
+                                    <span class="badge text-bg-warning">Bekliyor</span>
+                                }
+                            </td>
+                            <td>@r.CreatedUtc.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</td>
+                            <td>@(r.Code ?? "-")</td>
+                            <td>@(r.ExpiresAtUtc?.ToLocalTime().ToString("HH:mm:ss") ?? "-")</td>
+                            <td>@(r.UsedAtUtc?.ToLocalTime().ToString("HH:mm:ss") ?? "-")</td>
+                            <td>@(r.LastReminderUtc?.ToLocalTime().ToString("HH:mm:ss") ?? "-")</td>
+                            <td>@r.ReminderCount</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>

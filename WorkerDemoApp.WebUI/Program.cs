@@ -1,13 +1,17 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using WorkerDemoApp.Core.Abstracts;
+using WorkerDemoApp.Core.Extensions;
 using WorkerDemoApp.DAL;
 using WorkerDemoApp.Entity;
+using WorkerDemoApp.Services.Abstracts;
+using WorkerDemoApp.Services.Concrete;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
+builder.Services.Configure<SmtpOptions>(builder.Configuration.GetSection("Smtp"));
 builder.Services.AddDbContext<BaseContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("dbCon")));
 
 //Session'ý kullanabilmek için gerekli ayarlarý yapýyoruz.
@@ -19,20 +23,36 @@ builder.Services.AddSession(option =>
 
 });
 
-builder.Services.AddIdentityCore<AppUser>(option =>
+//builder.Services.AddIdentityCore<AppUser>(option =>
+//{
+//    option.User.RequireUniqueEmail = true;
+//    option.Password.RequiredLength = 3;
+//    option.Password.RequireDigit = false;
+//    option.Password.RequiredUniqueChars = 0;
+//    option.Password.RequireUppercase = false;
+//    option.Password.RequireNonAlphanumeric = false;
+//    option.Password.RequireLowercase = false;
+//}).AddEntityFrameworkStores<BaseContext>();
+builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>(opt =>
 {
-    option.User.RequireUniqueEmail = true;
-    option.Password.RequiredLength = 3;
-    option.Password.RequireDigit = false;
-    option.Password.RequiredUniqueChars = 0;
-    option.Password.RequireUppercase = false;
-    option.Password.RequireNonAlphanumeric = false;
-    option.Password.RequireLowercase = false;
-}).AddEntityFrameworkStores<BaseContext>();
+    opt.User.RequireUniqueEmail = true;
+    opt.SignIn.RequireConfirmedEmail = true;
+})
+.AddEntityFrameworkStores<BaseContext>()
+.AddDefaultTokenProviders();
+
+builder.Services.ConfigureApplicationCookie(opt =>
+{
+    opt.LoginPath = "/Auth/Login";
+    opt.LogoutPath = "/Auth/Logout";
+    opt.AccessDeniedPath = "/Auth/Denied";
+});
 
 //IOC -> Razor View Engine Dependency Injection yapmak için hangi interface hangi classla eþleþiyor buradan bilgi alýyor.
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IEFContext, BaseContext>();
+builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
