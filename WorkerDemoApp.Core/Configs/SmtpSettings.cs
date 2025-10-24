@@ -14,6 +14,6 @@ namespace WorkerDemoApp.Core.Configs
         public string UserName { get; set; } = "";
         public string Password { get; set; } = "";
         public string FromEmail { get; set; } = "";
-        public string FromName { get; set; } = "CODE";
+        public string FromName { get; set; } = "WorkerDemoApp";
     }
 }

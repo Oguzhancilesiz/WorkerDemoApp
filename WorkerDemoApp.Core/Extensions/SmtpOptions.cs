@@ -14,7 +14,7 @@ namespace WorkerDemoApp.Core.Extensions
         public string UserName { get; set; } = "";
         public string Password { get; set; } = "";
         public string FromEmail { get; set; } = "";
-        public string FromName { get; set; } = "CODE";
+        public string FromName { get; set; } = "WorkerDemoApp";
         public int TimeoutMs { get; set; } = 100000; // 100 sn
     }
 }

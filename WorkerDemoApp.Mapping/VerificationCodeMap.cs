@@ -17,6 +17,8 @@ namespace WorkerDemoApp.Mapping
 
             b.Property(x => x.Code).IsRequired().HasMaxLength(12);
             b.Property(x => x.ExpiresAtUtc).IsRequired();
+            b.Property(x => x.ReminderCount).HasDefaultValue(0);
+            b.Property(x => x.FirstReminderUtc);
 
             b.HasOne(x => x.User)
              .WithMany()
@@ -25,6 +27,7 @@ namespace WorkerDemoApp.Mapping
 
             b.HasIndex(x => new { x.UserId, x.Type, x.Status });
             b.HasIndex(x => x.ExpiresAtUtc);
+
         }
     }
 }

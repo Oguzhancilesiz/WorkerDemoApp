@@ -105,7 +105,7 @@ namespace WorkerDemoApp.Services.Concrete
             // include user
             var pending = await q.Include(x => x.User)
                                  .Where(x => x.User.EmailConfirmed == false &&
-                                             (x.LastReminderUtc == null || x.LastReminderUtc <= now.AddMinutes(-10)))
+                                             (x.LastReminderUtc == null || x.LastReminderUtc <= now.AddMinutes(-1)))
                                  .ToListAsync(ct);
 
             int sent = 0;
@@ -117,7 +117,10 @@ namespace WorkerDemoApp.Services.Concrete
                     ct);
 
                 item.LastReminderUtc = now;
+                item.ReminderCount++;
+                if (item.FirstReminderUtc is null) item.FirstReminderUtc = now;
                 await vcRepo.Update(item);
+
                 sent++;
             }
 

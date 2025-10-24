@@ -254,11 +254,19 @@ namespace WorkerDemoApp.DAL.Migrations
                     b.Property<DateTime>("ExpiresAtUtc")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime?>("FirstReminderUtc")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime?>("LastReminderUtc")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("ReminderCount")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
 
                     b.Property<int>("Status")
                         .HasColumnType("int");

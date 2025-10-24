@@ -16,5 +16,8 @@ namespace WorkerDemoApp.Entity
         public DateTime ExpiresAtUtc { get; set; }       // +2 dakika
         public DateTime? UsedAtUtc { get; set; }         // null ise kullanılmamış
         public DateTime? LastReminderUtc { get; set; }   // 10 dk spam koruması
+
+        public int ReminderCount { get; set; } = 0;
+        public DateTime? FirstReminderUtc { get; set; }
     }
 }
