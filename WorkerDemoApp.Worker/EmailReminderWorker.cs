@@ -7,6 +7,9 @@ using WorkerDemoApp.Services.Abstracts;
 
 namespace WorkerDemoApp.Worker
 {
+    /// <summary>
+    /// e-mail hatırlatma servis
+    /// </summary>
     public class EmailReminderWorker : BackgroundService
     {
         private readonly IServiceProvider _sp;
@@ -17,7 +20,11 @@ namespace WorkerDemoApp.Worker
             _sp = sp;
             _logger = logger;
         }
-
+        /// <summary>
+        /// dakika başı hatırlatma e-postası gönderir token stop edilene kadar
+        /// </summary>
+        /// <param name="stoppingToken"></param>
+        /// <returns></returns>
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             _logger.LogInformation("EmailReminderWorker started.");

@@ -13,7 +13,14 @@ namespace WorkerDemoApp.Services.Concrete
     {
         private readonly SmtpOptions _opt;
         public EmailService(IOptions<SmtpOptions> opt) { _opt = opt.Value; }
-
+        /// <summary>
+        /// verilen parametrelere göre email gönderir
+        /// </summary>
+        /// <param name="to"></param>
+        /// <param name="subject"></param>
+        /// <param name="htmlBody"></param>
+        /// <param name="ct"></param>
+        /// <returns></returns>
         public async Task SendAsync(string to, string subject, string htmlBody, CancellationToken ct = default)
         {
             using var msg = MailHelper.MailCreate(new[] { to }, subject, htmlBody);

@@ -9,6 +9,9 @@ using WorkerDemoApp.Core.Enums;
 
 namespace WorkerDemoApp.Entity
 {
+    /// <summary>
+    /// app user entity
+    /// </summary>
     public class AppUser : IdentityUser<Guid>, IEntity
     {
         public Status Status { get; set; }
