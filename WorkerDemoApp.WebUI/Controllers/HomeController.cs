@@ -16,7 +16,10 @@ public class HomeController : Controller
         _logger = logger;
         _db = db;
     }
-
+    /// <summary>
+    /// kullanýcý ve doðrulama kodu metrikleri ile dashboard'ý gösterir
+    /// </summary>
+    /// <returns></returns>
     public async Task<IActionResult> Index()
     {
         // Metrikler

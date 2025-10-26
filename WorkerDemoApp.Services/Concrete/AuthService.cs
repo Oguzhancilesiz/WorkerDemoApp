@@ -23,7 +23,13 @@ namespace WorkerDemoApp.Services.Concrete
             _uow = uow;
             _email = email;
         }
-
+        /// <summary>
+        /// kayıt ol ve doğrulama kodunu e-mail olarak gönder
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="password"></param>
+        /// <param name="ct"></param>
+        /// <returns></returns>
         public async Task<(bool Ok, string? Error)> RegisterAsync(string email, string password, CancellationToken ct)
         {
             var exists = await _userManager.Users.AnyAsync(x => x.Email == email, ct);
@@ -64,7 +70,13 @@ namespace WorkerDemoApp.Services.Concrete
 
             return (true, null);
         }
-
+        /// <summary>
+        /// e-mail doğrulama kodunu onayla ve e-maili doğrula
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="code"></param>
+        /// <param name="ct"></param>
+        /// <returns></returns>
         public async Task<(bool Ok, string? Error)> ConfirmAsync(string email, string code, CancellationToken ct)
         {
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Email == email, ct);
@@ -91,13 +103,17 @@ namespace WorkerDemoApp.Services.Concrete
             return (true, null);
         }
 
-        // Worker çağırır: 10 dakikada bir hatırlatma
+        /// <summary>
+        /// worker tarafından periyodik olarak çağrılır 1 dk’da bir işlem yapar
+        /// </summary>
+        /// <param name="ct"></param>
+        /// <returns></returns>
         public async Task<int> SendRemindersAsync(CancellationToken ct)
         {
             var vcRepo = _uow.Repository<VerificationCode>();
             var now = DateTime.UtcNow;
 
-            // Kullanıcı e-maili onaylanmamış + kodu hiç kullanılmamış + reminder aralığı 10 dk dolmuş
+            /// doğrulanmamış kullanıcılar için hatırlatma e-maili gönder
             var q = await vcRepo.GetBy(x =>
                 x.Status == Core.Enums.Status.Active &&
                 x.UsedAtUtc == null);
@@ -111,7 +127,7 @@ namespace WorkerDemoApp.Services.Concrete
             int sent = 0;
             foreach (var item in pending)
             {
-                // nazik ama net spam: 10 dk’da bir
+                // hatırlatma e-maili gönder
                 await _email.SendAsync(item.User.Email!, "Hesabınızı Doğrulamadınız",
                     "<p>Hesabınızı henüz doğrulamadınız. Lütfen uygulamadaki doğrulama kodu ekranından işlemi tamamlayın.</p>",
                     ct);
@@ -127,7 +143,11 @@ namespace WorkerDemoApp.Services.Concrete
             if (sent > 0) await _uow.SaveChangesAsync();
             return sent;
         }
-
+        /// <summary>
+        /// kod üret
+        /// </summary>
+        /// <param name="len"></param>
+        /// <returns></returns>
         static string GenerateCode(int len)
         {
             var r = new Random();

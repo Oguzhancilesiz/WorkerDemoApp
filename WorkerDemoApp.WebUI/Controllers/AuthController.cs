@@ -18,16 +18,28 @@ namespace WorkerDemoApp.WebUI.Controllers
             _signInManager = signInManager;
             _userManager = userManager;
         }
-
+        /// <summary>
+        /// mesaj tipi ve içeriğini TempData'ya ekler
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="message"></param>
         private void Alert(string type, string message)
         {
             TempData["MessageType"] = type;
             TempData["Message"] = message;
         }
-
+        /// <summary>
+        /// register sayfası
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult Register() => View();
-
+        /// <summary>
+        /// kayıt işlemi yapılır ve doğrulama kodu e-posta olarak gönderilir
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="ct"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model, CancellationToken ct)
         {
@@ -47,7 +59,11 @@ namespace WorkerDemoApp.WebUI.Controllers
             Alert("success", "Doğrulama kodu e-postanıza gönderildi.");
             return RedirectToAction(nameof(Confirm), new { email = model.Email });
         }
-
+        /// <summary>
+        /// confirm sayfası e-posta ile doğrulama kodu girilir
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult Confirm(string email)
         {
@@ -81,7 +97,11 @@ namespace WorkerDemoApp.WebUI.Controllers
 
         [HttpGet]
         public IActionResult Login() => View();
-
+        /// <summary>
+        /// login işlemi yapılır ve kullanıcı ana sayfaya yönlendirilir
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
